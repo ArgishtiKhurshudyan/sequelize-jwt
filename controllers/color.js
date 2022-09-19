@@ -8,13 +8,13 @@ export const createColor = async (req, res) => {
         id: color.id,
       },
       through: {attributes: []},
-      include: {
-        model: Product,
-        as: 'colors'
-      },
+      // include: {
+      //   model: Product,
+      //   as: 'colors'
+      // },
       truncate: false
     })
-    await colorToBeAssignProducts.addColors(req.body.products, {through: 'ProductColors'})
+    // await colorToBeAssignProducts.addColors(req.body.products, {through: 'ProductColors'})
     return res.status(200).json({message: "color!", data: color})
   } catch (err) {
     console.log("error ", err)
