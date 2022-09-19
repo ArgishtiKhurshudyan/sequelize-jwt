@@ -24,18 +24,7 @@ export const verifyToken = async (req, res, next) => {
         return res.status(401).json({message: "user not authorized"})
       }
 
-      const user = await User.findOne({
-        where: {
-          id,
-        },
-        include: {
-          model: Product,
-          include: {
-            model: Color,
-            as: 'products'
-          }
-        }
-      })
+      const user = await User.findByPk(id)
 
       if (!user || user.role !== "admin" ) {
         return res.status(401).json({message: "Not enough permission to perform the request!"})
@@ -43,7 +32,6 @@ export const verifyToken = async (req, res, next) => {
         req.user = user
         next()
       }
-
     });
 
 
