@@ -3,14 +3,16 @@ import {Color, Product} from '../models'
 export const createColor = async (req, res) => {
   try {
     let color = await Color.create(req.body);
-    const colorToBeAssignProducts = await Color.findOne({
+    const colorToBeAssignProducts = await Color.findAll({
       where: {
         id: color.id,
       },
+      through: {attributes: []},
       include: {
         model: Product,
         as: 'colors'
-      }
+      },
+      truncate: false
     })
     await colorToBeAssignProducts.addColors(req.body.products, {through: 'ProductColors'})
     return res.status(200).json({message: "color!", data: color})

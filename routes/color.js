@@ -4,7 +4,7 @@ import {verifyToken} from "../verifyToken";
 
 const router = Router()
 
-router.post("/color", verifyToken, createColor)
+router.post("/", verifyToken, createColor)
 router.put("/:id", verifyToken, updateColor)
 router.delete("/:id", verifyToken, deleteColor)
 router.get("/:id", verifyToken, getColors)

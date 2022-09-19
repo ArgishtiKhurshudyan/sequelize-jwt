@@ -7,7 +7,7 @@ router.post("/product",verifyToken, createProduct);
 router.put("/:productId",verifyToken, updateProduct);
 router.delete("/:productId",verifyToken, deleteProduct);
 router.get("/:productId",verifyToken, getProduct);
-router.get("/user/:userId",verifyToken, getProducts);
+router.get("/",verifyToken, getProducts);
 
 
 export default router;
