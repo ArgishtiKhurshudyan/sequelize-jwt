@@ -36,32 +36,37 @@ export const login = async (req, res, next) => {
     const user = await User.findOne(
       {
         where: {email: req.body.email},
-        include: {
-          model: Product,
-          include: {
-            model: Color,
-            as: 'products'
-          }
-        }
+        // include: {
+        //   model: Product,
+        //   include: {
+        //     model: Color,
+        //     as: 'products'
+        //   }
+        // }
       });
 
-    if (!user) return next(createError(401, "username not found"));
+    if (!user) return res.status(401).json({message: "username not found"});
     const isPasswordCorrect = await bcrypt.compare(
       req.body.password,
       user.password,
     );
 
-    if (!isPasswordCorrect)
-      return next(createError(401, "Wrong password or username"));
-    const token = generateAccessToken(user.id, user.roles, {isAdmin: user.isAdmin},)
-    const {password, isAdmin, ...otherDetails} = user._previousDataValues
+    if (!isPasswordCorrect) {
+      console.log('123132')
+      return res.status(401).json({'message': "Wrong password or username"})
+    } else {
+      const token = generateAccessToken(user.id, user.roles, {isAdmin: user.isAdmin},)
+      const {password, isAdmin, ...otherDetails} = user._previousDataValues
 
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
-      .status(200)
-      .json({details: {...otherDetails}, isAdmin});
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+        })
+        .status(200)
+        .json({details: {...otherDetails}, isAdmin});
+    }
+      // return next(createError(401, "Wrong password or username"));
+
   } catch (err) {
     return res.status(500).json(err)
   }
